@@ -1,6 +1,4 @@
 clc; clear all;
-addpath('./schemes')
-addpath('./tools')
 
 params = 438; % the secret key 
 WET = single(1e14);% STC wet cost
@@ -18,11 +16,7 @@ fprintf('Embedding using Matlab file');
 MEXstart = tic;
 
 %% Run default embedding
-% rho= WOW(cover);
-% rho= S_UNIWARD(cover);
-rho= Hill(cover);
-% rho = QMLP(cover);
-% rho = QML(cover);
+rho = QMP(cover);
 MEXend = toc(MEXstart);
 
 %% Embedding simulator
@@ -44,5 +38,3 @@ set (gcf,'Position',[0,0,512,512]);
 fprintf('\n\nImage embedded in %.2f seconds, change rate: %.4f', MEXend, sum(cover(:)~=stego(:))/numel(cover));
 
 
-rmpath('./schemes')
-rmpath('./tools')
