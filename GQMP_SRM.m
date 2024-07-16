@@ -1,9 +1,9 @@
-function rho = GQMP_SRM(cover)
-% function rho = GQMP_SRM(cover,m,n)
-% if nargin < 2
-%     m = 1.1;n = 0.8;
-% end
-m = 1.1;n = 0.8;
+%function rho = GQMP_SRM(cover)
+function rho = GQMP_SRM(cover,m,n)
+if nargin < 2
+     m = 1.1;n = 0.8;
+end
+%m = 1.1;n = 0.8;
 
 [k,l] = size(cover);
 %% Get 2D quaternion filters based on KB filter
@@ -38,28 +38,28 @@ for fIndex=1:4
     QR{fIndex} = R1;
 end
 
-%% ËÄÔªÊıQ = A + Bi + Cj + Dk
+%% å››å…ƒæ•°Q = A + Bi + Cj + Dk
 A = QR{1};B = QR{2};C = QR{3};D = QR{4};
 
-%% ·Ö½âQµÄÏµÊı A = M.* P ÆäÖĞ£ºP= cos(thetaA),thetaA = atan2(sqrt(B.^2+C.^2+D.^2),abs(a))
-M = sqrt(A.^2+B.^2+C.^2+D.^2);% ¼ÆËã·ùÖµ
+%% åˆ†è§£Qçš„ç³»æ•° A = M.* P å…¶ä¸­ï¼šP= cos(thetaA),thetaA = atan2(sqrt(B.^2+C.^2+D.^2),abs(a))
+M = sqrt(A.^2+B.^2+C.^2+D.^2);% è®¡ç®—å¹…å€¼
 
-P = A./(M+eps); % ¼ÆËãÏàÎ»£¬ÔÚÒÑÖªAµÄÇé¿öÏÂ£¬¿ÉÒÔ¼ò±ã¼ÆËã
+P = A./(M+eps); % è®¡ç®—ç›¸ä½ï¼Œåœ¨å·²çŸ¥Açš„æƒ…å†µä¸‹ï¼Œå¯ä»¥ç®€ä¾¿è®¡ç®—
 
-% ¶ÔÏàÎ»½øĞĞ¾ÛºÏ
+% å¯¹ç›¸ä½è¿›è¡Œèšåˆ
 L1 =  fspecial('average',[13 13]);
 P= imfilter(P, L1 ,'symmetric','same');
 
-%% ¼ÆËã»ùÓÚ·ùÖµºÍÏàÎ»µÄÊ§Õæ´ú¼Û
-rhoM = 1./(M+10^(-10));% ¼ÆËã·ùÖµ¶ÔÓ¦µÄÊ§Õæ´ú¼Û
+%% è®¡ç®—åŸºäºå¹…å€¼å’Œç›¸ä½çš„å¤±çœŸä»£ä»·
+rhoM = 1./(M+10^(-10));% è®¡ç®—å¹…å€¼å¯¹åº”çš„å¤±çœŸä»£ä»·
 rhoM(rhoM>1)=1;
-% ¶Ôrho½øĞĞ¾ÛºÏ
+% å¯¹rhoè¿›è¡Œèšåˆ
 L2 =  fspecial('average',[13 13]);
 rhoM = imfilter(rhoM, L2 ,'symmetric','same');
 
-rhoP = 1./(P+10^(-10));% ¼ÆËãÏàÎ»¶ÔÓ¦µÄÊ§Õæ´ú¼Û
+rhoP = 1./(P+10^(-10));% è®¡ç®—ç›¸ä½å¯¹åº”çš„å¤±çœŸä»£ä»·
 
-%¼ÆËã×ÜÊ§Õæ´ú¼Û
+%è®¡ç®—æ€»å¤±çœŸä»£ä»·
 rho = (rhoM.^m) .* (rhoP.^n);
 
 end
